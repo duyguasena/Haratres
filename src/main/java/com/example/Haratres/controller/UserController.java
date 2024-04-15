@@ -12,17 +12,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RequestMapping("api/v1/users")
 public class UserController {
-
     @Autowired
     private  UserService userService;
-
     @PostMapping( "/save")
     public String saveUser(@RequestBody UserDTO userDTO){
         String id=userService.addUser(userDTO);
         return id;
     }
-
-
     @PostMapping( "/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO){
         LoginResponse loginResponse=userService.loginUser(loginDTO);

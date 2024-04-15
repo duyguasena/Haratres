@@ -3,7 +3,7 @@ package com.example.Haratres.service.imp;
 
 import com.example.Haratres.dto.LoginDTO;
 import com.example.Haratres.dto.UserDTO;
-import com.example.Haratres.entity.User;
+import com.example.Haratres.model.User;
 import com.example.Haratres.repository.UserRepository;
 import com.example.Haratres.response.LoginResponse;
 import com.example.Haratres.service.UserService;
@@ -36,8 +36,6 @@ public class UserImpl implements UserService {
 
 
     }
-
-
 
     @Override
     public LoginResponse loginUser(LoginDTO loginDTO) {
