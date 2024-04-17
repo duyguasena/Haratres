@@ -65,42 +65,44 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
 
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeRequests(auth ->
-//                        auth.antMatchers("/api/**").permitAll()
-//                                .antMatchers("/swagger-ui/**").permitAll()
-//                                .antMatchers("/docs/**").permitAll()
-//                                .anyRequest().authenticated()
-//                )
-//                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .userDetailsService(jpaUserDetailsService)
-//                .authenticationProvider(authenticationProvider())
-//                .httpBasic().disable()
-//                .build();
-//    }
-@Bean
-public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    httpSecurity
-            .cors()
-            .and()
-            .csrf().disable()
-            .exceptionHandling().authenticationEntryPoint(handler).and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/products")
-            .permitAll()
-            .antMatchers(HttpMethod.GET, "/comments")
-            .permitAll()
-            .antMatchers("/auth/**")
-            .permitAll()
-            .anyRequest().authenticated();
+//@Bean
+//public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+//    httpSecurity
+//            .cors()
+//            .and()
+//            .csrf().disable()
+//            .exceptionHandling().authenticationEntryPoint(handler).and()
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//            .authorizeRequests()
+//            .antMatchers(HttpMethod.GET, "/products")
+//            .permitAll()
+//            .antMatchers(HttpMethod.GET, "/comments")
+//            .permitAll()
+//            .antMatchers("/auth/**")
+//            .permitAll()
+//            .anyRequest().authenticated();
+//
+//    httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//    return httpSecurity.build();
+//}
 
-    httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    return httpSecurity.build();
-}
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .cors()
+                .and()
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(handler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
+                .antMatchers( "/auth/**")
+                .permitAll()
+                .antMatchers("/products/**")
+                .hasAnyAuthority("ADMIN")
+                .anyRequest().authenticated();
+
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
+    }
 
 }
