@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +26,8 @@ public class JwtUserDetails implements UserDetails {
     }
     public static JwtUserDetails create(User user) {
         List<GrantedAuthority> authoritiesList = new ArrayList<>();
-        authoritiesList.add(new SimpleGrantedAuthority("user"));
+        authoritiesList.add(new SimpleGrantedAuthority("ADMIN"));
+        authoritiesList.add(new SimpleGrantedAuthority("CUSTOMER"));
         return new JwtUserDetails(user.getId(), user.getUserName(), user.getPassword(), authoritiesList);
     }
 

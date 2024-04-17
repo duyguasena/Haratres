@@ -1,11 +1,15 @@
 package com.example.Haratres.model;
 
-import jakarta.persistence.*;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 @Entity
 @Table(name="users")
 @Data
@@ -17,12 +21,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
     private String userName;
-    private String email;
     private String password;
-    public User(Long id, String userName, String email, String encode) {
+    public User(Long id, String userName, String encode) {
         this.id=id;
         this.userName = userName;
-        this.email=email;
         this.password=encode;
     }
    public User() {
