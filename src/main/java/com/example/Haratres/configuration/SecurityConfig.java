@@ -6,7 +6,6 @@ import com.example.Haratres.service.imp.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -65,26 +64,6 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
 
-//@Bean
-//public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-//    httpSecurity
-//            .cors()
-//            .and()
-//            .csrf().disable()
-//            .exceptionHandling().authenticationEntryPoint(handler).and()
-//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//            .authorizeRequests()
-//            .antMatchers(HttpMethod.GET, "/products")
-//            .permitAll()
-//            .antMatchers(HttpMethod.GET, "/comments")
-//            .permitAll()
-//            .antMatchers("/auth/**")
-//            .permitAll()
-//            .anyRequest().authenticated();
-//
-//    httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-//    return httpSecurity.build();
-//}
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -98,7 +77,7 @@ public class SecurityConfig {
                 .antMatchers( "/auth/**")
                 .permitAll()
                 .antMatchers("/products/**")
-                .hasAnyAuthority("ADMIN")
+                .hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

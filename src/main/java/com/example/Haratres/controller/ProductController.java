@@ -7,8 +7,10 @@ import com.example.Haratres.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+@Secured("ADMIN")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -16,21 +18,25 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @PostMapping
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<Long> addProduct(@RequestBody ProductRequest productRequest){
         Long productId=productService.addProduct(productRequest);
         return new ResponseEntity<>(productId, HttpStatus.OK);
     }
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable ("id") Long productId){
         ProductResponse response=productService.getProductById(productId);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @Secured("ROLE_ADMIN")
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
         return productService.updateProduct(id,productRequest);
