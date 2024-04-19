@@ -10,15 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-@Secured("ADMIN")
 @RestController
 @RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
-    @PostMapping
     @Secured("ROLE_ADMIN")
+    @PostMapping
     public ResponseEntity<Long> addProduct(@RequestBody ProductRequest productRequest){
         Long productId=productService.addProduct(productRequest);
         return new ResponseEntity<>(productId, HttpStatus.OK);

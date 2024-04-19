@@ -12,10 +12,10 @@ import java.util.Date;
 public class JwtTokenProvider {
 
 
-    @Value("${Haratres.app.secret}")
+    @Value("${haratres.app.secret}")
     private String APP_SECRET;
 
-    @Value("${Haratres.expires.in}")
+    @Value("${haratres.expires.in}")
     private long EXPIRES_IN;
 
     public String generateJwtToken(Authentication auth) {
