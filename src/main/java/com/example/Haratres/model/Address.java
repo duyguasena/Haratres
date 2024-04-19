@@ -2,10 +2,7 @@ package com.example.Haratres.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-
-
 @Entity
 @Table(name="address")
 @Data
@@ -18,8 +15,7 @@ public class Address {
     private String city;
     private String postalCode;
 
-    @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
 }

@@ -6,6 +6,7 @@ import com.example.Haratres.dto.ProductRequest;
 import com.example.Haratres.model.Address;
 import com.example.Haratres.model.Product;
 import com.example.Haratres.service.AddressService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/address")
 public class AddressController {
+    @Autowired
     private AddressService addressService;
     @Secured("ROLE_CUSTOMER")
     @PostMapping

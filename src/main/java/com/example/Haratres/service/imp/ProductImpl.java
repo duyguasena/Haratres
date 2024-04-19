@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class ProductImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
-
     @Override
     public Long addProduct(ProductRequest productRequest) {
         Product product=Product.builder()
@@ -22,7 +21,6 @@ public class ProductImpl implements ProductService {
         productRepository.save(product);
         return product.getId();
     }
-
     @Override
     public ProductResponse getProductById(Long productId) {
         Product product=productRepository.findById(productId)
@@ -33,20 +31,16 @@ public class ProductImpl implements ProductService {
                 .build();
         return productResponse;
     }
-
     @Override
     public void deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
-
     @Override
     public Product updateProduct(Long id, ProductRequest productRequest) {
         Product realProduct=productRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Id bulunamadı"));
-
         realProduct.setProductName(productRequest.getProductName());
         realProduct.setPrice(productRequest.getPrice());
-
         productRepository.save(realProduct);
         return realProduct;
     }

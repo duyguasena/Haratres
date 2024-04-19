@@ -3,11 +3,11 @@ package com.example.Haratres.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="users")
 @Data
@@ -19,4 +19,9 @@ public class User {
     private String userName;
     private String password;
     private String roles;
+
+    @OneToMany(mappedBy = "users",cascade =CascadeType.MERGE,fetch = FetchType.LAZY,orphanRemoval = true)
+    private List<Address> addressList=new ArrayList<>();
+
+
 }
