@@ -14,14 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
     private String userName;
     private String password;
     private String roles;
 
-    @OneToMany(mappedBy = "users",cascade =CascadeType.MERGE,fetch = FetchType.LAZY,orphanRemoval = true)
-    private List<Address> addressList=new ArrayList<>();
 
 
 }
