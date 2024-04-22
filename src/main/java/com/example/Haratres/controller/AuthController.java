@@ -1,7 +1,7 @@
 package com.example.Haratres.controller;
 
+import com.example.Haratres.dto.LoginRequest;
 import com.example.Haratres.dto.RegisterRequest;
-import com.example.Haratres.dto.UserRequest;
 import com.example.Haratres.model.User;
 import com.example.Haratres.security.JwtTokenProvider;
 import com.example.Haratres.service.UserService;
@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserRequest loginRequest) {
+    public String login(@RequestBody LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
