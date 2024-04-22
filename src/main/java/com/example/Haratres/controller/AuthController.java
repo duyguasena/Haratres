@@ -1,5 +1,6 @@
 package com.example.Haratres.controller;
 
+import com.example.Haratres.dto.RegisterRequest;
 import com.example.Haratres.dto.UserRequest;
 import com.example.Haratres.model.User;
 import com.example.Haratres.security.JwtTokenProvider;
@@ -42,9 +43,14 @@ public class AuthController {
         return "Bearer " +jwtToken;
     }
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRequest registerRequest) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        if (userService.existsByUsername(registerRequest.getUserName())) {
+            return new ResponseEntity<>("User is already registered!", HttpStatus.BAD_REQUEST);
+        }
         User user = new User();
         user.setUserName(registerRequest.getUserName());
+        user.setEmail(registerRequest.getEmail());
+        user.setPhoneNumber(registerRequest.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setRoles("CUSTOMER");
         userService.saveOneUser(user);
