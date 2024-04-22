@@ -2,7 +2,6 @@ package com.example.Haratres.service.imp;
 
 import com.example.Haratres.dto.AddressRequest;
 import com.example.Haratres.model.Address;
-import com.example.Haratres.model.Product;
 import com.example.Haratres.repository.AddressRepository;
 import com.example.Haratres.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;

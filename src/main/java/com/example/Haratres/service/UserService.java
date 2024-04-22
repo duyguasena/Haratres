@@ -7,4 +7,5 @@ public interface UserService {
     User saveOneUser(User user);
 
     boolean existsByUsername(String userName);
+
 }

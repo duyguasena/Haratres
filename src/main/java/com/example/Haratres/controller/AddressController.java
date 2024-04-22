@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/address")
@@ -18,7 +17,7 @@ public class AddressController {
     private AddressService addressService;
     @Secured("ROLE_CUSTOMER")
     @PostMapping
-    public ResponseEntity<Long> addAddress(@RequestBody AddressRequest addressRequest, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Long> addAddress(@RequestBody AddressRequest addressRequest) {
         Long productId = addressService.addAddress(addressRequest);
         return new ResponseEntity<>(productId, HttpStatus.CREATED);
     }
