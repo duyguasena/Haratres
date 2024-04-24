@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,7 +44,7 @@ public class AuthController {
         return "Bearer " +jwtToken;
     }
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest) {
         if (userService.existsByUsername(registerRequest.getUserName())) {
             return new ResponseEntity<>("User is already registered!", HttpStatus.BAD_REQUEST);
         }

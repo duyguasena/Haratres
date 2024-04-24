@@ -2,15 +2,21 @@ package com.example.Haratres.service.imp;
 
 import com.example.Haratres.dto.AddressRequest;
 import com.example.Haratres.model.Address;
+import com.example.Haratres.model.User;
 import com.example.Haratres.repository.AddressRepository;
+import com.example.Haratres.repository.UserRepository;
 import com.example.Haratres.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AddressImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public Long addAddress(AddressRequest addressRequest) {
         Address address = new Address();
@@ -18,7 +24,8 @@ public class AddressImpl implements AddressService {
         address.setCity(addressRequest.getCity());
         address.setPostalCode(addressRequest.getPostalCode());
         address.setAddressDetail(addressRequest.getAddressDetail());
-        //address.setUser();
+        User currentUser = getCurrentUser();
+        address.setUser(currentUser);
         addressRepository.save(address);
         return address.getId();
     }
@@ -39,9 +46,13 @@ public class AddressImpl implements AddressService {
         addressRepository.save(realAddress);
         return realAddress;
     }
-
     @Override
     public boolean existsById(Long id) {
         return addressRepository.existsById(id);
+    }
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        return (User) userRepository.findByUserName(userName);
     }
 }

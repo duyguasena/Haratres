@@ -5,10 +5,7 @@ import com.example.Haratres.model.Address;
 
 public interface AddressService {
     Long addAddress(AddressRequest addressRequest);
-
     void deleteAddressById(Long id);
-
     Address updateAddress(Long id, AddressRequest addressRequest);
-
     boolean existsById(Long id);
 }

@@ -23,4 +23,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findById(id).get();
         return JwtUserDetails.create(user);
     }
+
 }
