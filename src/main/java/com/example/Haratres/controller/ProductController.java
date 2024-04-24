@@ -18,9 +18,9 @@ public class ProductController {
     private ProductService productService;
     @Secured("ROLE_ADMIN")
     @PostMapping
-    public ResponseEntity<Long> addProduct(@RequestBody ProductRequest productRequest){
-        Long productId=productService.addProduct(productRequest);
-        return new ResponseEntity<>(productId, HttpStatus.OK);
+    public ResponseEntity<Product> addProduct(@RequestBody ProductRequest productRequest){
+        Product newProduct=productService.addProduct(productRequest);
+        return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")

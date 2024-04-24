@@ -18,7 +18,7 @@ public class AddressImpl implements AddressService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public Long addAddress(AddressRequest addressRequest) {
+    public Address addAddress(AddressRequest addressRequest) {
         Address address = new Address();
         address.setStreet(addressRequest.getStreet());
         address.setCity(addressRequest.getCity());
@@ -27,7 +27,7 @@ public class AddressImpl implements AddressService {
         User currentUser = getCurrentUser();
         address.setUser(currentUser);
         addressRepository.save(address);
-        return address.getId();
+        return address;
     }
 
     @Override

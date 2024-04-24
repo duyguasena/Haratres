@@ -13,13 +13,13 @@ public class ProductImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
     @Override
-    public Long addProduct(ProductRequest productRequest) {
+    public Product addProduct(ProductRequest productRequest) {
         Product product=Product.builder()
                         .productName(productRequest.getProductName())
                                 .price(productRequest.getPrice())
                                         .build();
         productRepository.save(product);
-        return product.getId();
+        return product;
     }
     @Override
     public ProductResponse getProductById(Long productId) {

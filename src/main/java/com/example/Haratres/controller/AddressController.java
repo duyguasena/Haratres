@@ -17,9 +17,9 @@ public class AddressController {
     private AddressService addressService;
     @Secured("ROLE_CUSTOMER")
     @PostMapping
-    public ResponseEntity<Long> addAddress(@RequestBody AddressRequest addressRequest) {
-        Long productId = addressService.addAddress(addressRequest);
-        return new ResponseEntity<>(productId, HttpStatus.CREATED);
+    public ResponseEntity<Address> addAddress(@RequestBody AddressRequest addressRequest) {
+        Address newAddress = addressService.addAddress(addressRequest);
+        return new ResponseEntity<>(newAddress, HttpStatus.CREATED);
     }
     @Secured("ROLE_CUSTOMER")
     @DeleteMapping("/{id}")
@@ -34,7 +34,6 @@ public class AddressController {
     @PutMapping("/{id}")
     public Address updateAddress(@PathVariable Long id, @RequestBody AddressRequest addressRequest) {
         return addressService.updateAddress(id,addressRequest);
-
     }
 
 }
