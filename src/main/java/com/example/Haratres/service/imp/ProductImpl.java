@@ -32,7 +32,7 @@ public class ProductImpl implements ProductService {
         return productResponse;
     }
     @Override
-    public void deleteProductById(Long id) {
+    public void  deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
     @Override

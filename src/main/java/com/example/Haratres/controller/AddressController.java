@@ -23,9 +23,9 @@ public class AddressController {
     }
     @Secured("ROLE_CUSTOMER")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
+    public String deleteAddress(@PathVariable Long id) {
         addressService.deleteAddressById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "The address has been deleted";
     }
     @Secured("ROLE_CUSTOMER")
     @PutMapping("/{id}")
