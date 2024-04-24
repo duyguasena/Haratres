@@ -31,9 +31,12 @@ public class ProductController {
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+        if (!productService.existsById(id)) {
+            return new ResponseEntity<>("ID not found", HttpStatus.NOT_FOUND);
+        }
         productService.deleteProductById(id);
-        return "The product has been deleted";
+        return new ResponseEntity<>("The product has been deleted",HttpStatus.OK);
     }
     @Secured("ROLE_ADMIN")
     @PutMapping("/{id}")

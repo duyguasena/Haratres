@@ -39,4 +39,9 @@ public class AddressImpl implements AddressService {
         addressRepository.save(realAddress);
         return realAddress;
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return addressRepository.existsById(id);
+    }
 }

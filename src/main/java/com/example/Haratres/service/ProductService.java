@@ -9,4 +9,6 @@ public interface ProductService {
     ProductResponse getProductById(Long productId);
     void deleteProductById(Long id);
     Product updateProduct(Long id, ProductRequest productRequest);
+
+    boolean existsById(Long id);
 }

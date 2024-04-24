@@ -9,4 +9,6 @@ public interface AddressService {
     void deleteAddressById(Long id);
 
     Address updateAddress(Long id, AddressRequest addressRequest);
+
+    boolean existsById(Long id);
 }
