@@ -2,7 +2,7 @@ package com.example.Haratres.controller;
 
 import com.example.Haratres.dto.ProductRequest;
 import com.example.Haratres.dto.ProductResponse;
-import com.example.Haratres.model.Product;
+import com.example.Haratres.model.ColorProductVariant;
 import com.example.Haratres.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +18,14 @@ public class ProductController {
     private ProductService productService;
     @Secured("ROLE_ADMIN")
     @PostMapping
-    public ResponseEntity<Product> addProduct(@RequestBody ProductRequest productRequest){
-        Product newProduct=productService.addProduct(productRequest);
+    public ResponseEntity<ColorProductVariant> addProduct(@RequestBody ProductRequest productRequest){
+        ColorProductVariant newProduct=productService.addProduct(productRequest);
         return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable ("id") Long productId){
-        ProductResponse response=productService.getProductById(productId);
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable ("id") Long id){
+        ProductResponse response=productService.getProductById(id);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
@@ -40,7 +40,7 @@ public class ProductController {
     }
     @Secured("ROLE_ADMIN")
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
+    public ColorProductVariant updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
         return productService.updateProduct(id,productRequest);
 
     }

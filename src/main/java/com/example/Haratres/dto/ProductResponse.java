@@ -1,5 +1,8 @@
 package com.example.Haratres.dto;
 
+import com.example.Haratres.model.ColorProductVariant;
+import com.example.Haratres.model.SizeProductVariant;
+import com.example.Haratres.model.Stock;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,4 +15,7 @@ import lombok.NoArgsConstructor;
 public class ProductResponse {
     private String productName;
     private double price;
+    private ColorProductVariant productColor;
+    private SizeProductVariant productSize;
+    private Stock stock;
 }
