@@ -24,14 +24,14 @@ public class ProductController {
         ColorProductVariant newProduct=productService.addProduct(productRequest);
         return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_CUSTOMER")
     @GetMapping("/{id}")
     public ResponseEntity<ColorProductVariant> getProduct(@PathVariable Long id){
         ColorProductVariant response=productService.getProductById(id);
         return new ResponseEntity<>(response,HttpStatus.OK);
 
     }
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_CUSTOMER")
     @GetMapping()
     public List<ColorProductVariant> allProduct(){
         return productService.allProducts();

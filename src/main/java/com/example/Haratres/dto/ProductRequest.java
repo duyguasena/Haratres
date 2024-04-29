@@ -18,7 +18,7 @@ public class ProductRequest {
     private double price;
     private String colorVariantCode;
     private String color;
-    private ColorProductVariant productColor;
+    //private ColorProductVariant productColor;
     private SizeProductVariant productSize;//Liste haline getir
     private Stock stock;
 

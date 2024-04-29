@@ -33,7 +33,7 @@ public class ProductImpl implements ProductService {
         colorProduct.setProductName(productRequest.getProductName());
         colorProduct.setPrice(productRequest.getPrice());
         colorProduct.setColorVariantCode(productRequest.getColorVariantCode());
-        //colorProduct.setSizeProductVariants(List.of(sizeProduct));
+        colorProduct.setSizeProductVariants(List.of(sizeProduct));
         sizeProduct.setColorProductVariant(colorProduct);
         Stock stockProduct = new Stock();
         stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
