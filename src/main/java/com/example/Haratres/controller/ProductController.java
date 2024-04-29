@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -24,9 +26,15 @@ public class ProductController {
     }
     @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable ("id") Long id){
-        ProductResponse response=productService.getProductById(id);
+    public ResponseEntity<ColorProductVariant> getProduct(@PathVariable Long id){
+        ColorProductVariant response=productService.getProductById(id);
         return new ResponseEntity<>(response,HttpStatus.OK);
+
+    }
+    @Secured("ROLE_ADMIN")
+    @GetMapping()
+    public List<ColorProductVariant> allProduct(){
+        return productService.allProducts();
     }
 
     @Secured("ROLE_ADMIN")

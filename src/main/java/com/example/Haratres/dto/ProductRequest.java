@@ -5,15 +5,21 @@ import com.example.Haratres.model.SizeProductVariant;
 import com.example.Haratres.model.Stock;
 import lombok.*;
 
+import javax.persistence.Column;
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
 public class ProductRequest {
     private String productName;
     private double price;
+    private String colorVariantCode;
+    private String color;
     private ColorProductVariant productColor;
-    private SizeProductVariant productSize;
+    private SizeProductVariant productSize;//Liste haline getir
     private Stock stock;
+
 }

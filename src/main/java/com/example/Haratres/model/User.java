@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 
@@ -21,6 +22,8 @@ public class User {
     private String roles;
     private String email;
     private String phoneNumber;
+    private String gender;
+    private Date birthday;
 
     @OneToMany(mappedBy ="user")
     @JsonManagedReference

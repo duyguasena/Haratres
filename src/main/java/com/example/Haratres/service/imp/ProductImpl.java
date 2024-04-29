@@ -11,6 +11,9 @@ import com.example.Haratres.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
 @Service
 public class ProductImpl implements ProductService {
     @Autowired
@@ -18,26 +21,29 @@ public class ProductImpl implements ProductService {
     @Autowired
     private SizeProductRepository sizeProductRepository;
 
-@Override
-public ColorProductVariant addProduct(ProductRequest productRequest) {
-    SizeProductVariant sizeProduct= new SizeProductVariant();
-    sizeProduct.setSizeCode(productRequest.getProductSize().getSizeCode());
-    sizeProduct.setSize(productRequest.getProductSize().getSize());
-    ColorProductVariant colorProduct=new ColorProductVariant();
-    colorProduct.setColor(productRequest.getProductColor().getColor());
-    colorProduct.setProductName(productRequest.getProductName());
-    colorProduct.setPrice(productRequest.getPrice());
-    sizeProduct.setColorProductVariant(colorProduct);
-    Stock stockProduct=new Stock();
-    stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
-    stockProduct.setProductCode(productRequest.getStock().getProductCode());
-    colorProductRepository.save(colorProduct);
-    sizeProductRepository.save(sizeProduct);
-    return colorProduct;
-}
     @Override
-    public ProductResponse getProductById(Long id) {
-        ColorProductVariant product=colorProductRepository.findById(id)
+    public ColorProductVariant addProduct(ProductRequest productRequest) {
+
+        SizeProductVariant sizeProduct = new SizeProductVariant();
+        sizeProduct.setSizeCode(productRequest.getProductSize().getSizeCode());
+        sizeProduct.setSize(productRequest.getProductSize().getSize());
+        sizeProduct.setSizeVariantCode(productRequest.getProductSize().getSizeVariantCode());
+        ColorProductVariant colorProduct = new ColorProductVariant();
+        colorProduct.setColor(productRequest.getColor());
+        colorProduct.setProductName(productRequest.getProductName());
+        colorProduct.setPrice(productRequest.getPrice());
+        colorProduct.setColorVariantCode(productRequest.getColorVariantCode());
+        //colorProduct.setSizeProductVariants(List.of(sizeProduct));
+        sizeProduct.setColorProductVariant(colorProduct);
+        Stock stockProduct = new Stock();
+        stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
+        colorProductRepository.save(colorProduct);
+        sizeProductRepository.save(sizeProduct);
+        return colorProduct;
+    }
+    @Override
+    public ColorProductVariant getProductById(Long id) {
+        ColorProductVariant colorProduct=colorProductRepository.findById(id)
                 .orElseThrow(()->new RuntimeException("Product not found"));
         ProductResponse productResponse=new ProductResponse();
         productResponse.setProductName(productResponse.getProductName());
@@ -45,7 +51,7 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
         productResponse.setProductColor(productResponse.getProductColor());
         productResponse.setProductSize(productResponse.getProductSize());
         productResponse.setStock(productResponse.getStock());
-        return productResponse;
+        return colorProduct;
     }
     @Override
     public void  deleteProductById(Long id) {
@@ -57,6 +63,8 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
                 .orElseThrow(()->new RuntimeException("Id bulunamadı"));
         realProduct.setProductName(productRequest.getProductName());
         realProduct.setPrice(productRequest.getPrice());
+        realProduct.setColor(productRequest.getColor());
+        realProduct.setColorVariantCode(productRequest.getColorVariantCode());
         colorProductRepository.save(realProduct);
         return realProduct;
     }
@@ -65,4 +73,11 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
     public boolean existsById(Long id) {
         return colorProductRepository.existsById(id);
     }
+
+    @Override
+    public List<ColorProductVariant> allProducts() {
+        return colorProductRepository.findAll();
+    }
+
+
 }

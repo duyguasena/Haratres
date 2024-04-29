@@ -53,6 +53,8 @@ public class AuthController {
         user.setEmail(registerRequest.getEmail());
         user.setPhoneNumber(registerRequest.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setGender(registerRequest.getGender());
+        user.setBirthday(registerRequest.getBirthday());
         user.setRoles("CUSTOMER");
         userService.saveOneUser(user);
         return new ResponseEntity<>("User succesfully registered", HttpStatus.CREATED);
