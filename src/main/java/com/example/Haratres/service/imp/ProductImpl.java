@@ -1,6 +1,5 @@
 package com.example.Haratres.service.imp;
 
-import com.example.Haratres.dto.ColorProductVariantData;
 import com.example.Haratres.dto.ProductRequest;
 import com.example.Haratres.dto.ProductResponse;
 import com.example.Haratres.model.ColorProductVariant;
@@ -9,9 +8,10 @@ import com.example.Haratres.model.Stock;
 import com.example.Haratres.repository.ColorProductRepository;
 import com.example.Haratres.repository.SizeProductRepository;
 import com.example.Haratres.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,30 +22,38 @@ public class ProductImpl implements ProductService {
     private ColorProductRepository colorProductRepository;
     @Autowired
     private SizeProductRepository sizeProductRepository;
-
-    @Override
-    public ColorProductVariant addProduct(ProductRequest productRequest) {
-        ColorProductVariant colorProduct = new ColorProductVariant();
-        colorProduct.setColor(productRequest.getColor());
-        colorProduct.setProductName(productRequest.getProductName());
-        colorProduct.setPrice(productRequest.getPrice());
-        colorProduct.setColorVariantCode(productRequest.getColorVariantCode());
-        List<SizeProductVariant> sizeProductVariants=new ArrayList<>();
-        for(SizeProductVariant size : productRequest.getProductSize()) {
-            SizeProductVariant sizeProduct = new SizeProductVariant();
-            sizeProduct.setSizeCode(size.getSizeCode());
-            sizeProduct.setSize(size.getSize());
-            sizeProduct.setSizeVariantCode(size.getSizeVariantCode());
-            size.setColorProductVariant(colorProduct);
+@Override
+public ColorProductVariant addProduct(ProductRequest productRequest) {
+    ColorProductVariant colorProduct = new ColorProductVariant();
+    colorProduct.setColor(productRequest.getColor());
+    colorProduct.setProductName(productRequest.getProductName());
+    colorProduct.setPrice(productRequest.getPrice());
+    colorProduct.setColorVariantCode(productRequest.getColorVariantCode());
+    List<SizeProductVariant> sizeProductVariants=new ArrayList<>();
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+    for(SizeProductVariant size : productRequest.getProductSize()) {
+        SizeProductVariant sizeProduct = new SizeProductVariant();
+        sizeProduct.setSizeCode(size.getSizeCode());
+        sizeProduct.setSize(size.getSize());
+        sizeProduct.setSizeVariantCode(size.getSizeVariantCode());
+        size.setColorProductVariant(colorProduct);
+        try {
             sizeProductRepository.save(sizeProduct);
             sizeProductVariants.add(sizeProduct);
+        } catch (Exception e) {
+            logger.error("Error saving size product variant:  {}", e.getMessage());
         }
-        colorProduct.setSizeProductVariants(sizeProductVariants);
-        Stock stockProduct = new Stock();
-        stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
-        colorProductRepository.save(colorProduct);
-        return colorProduct;
     }
+    colorProduct.setSizeProductVariants(sizeProductVariants);
+    Stock stockProduct = new Stock();
+    stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
+    try {
+        colorProductRepository.save(colorProduct);
+    } catch (Exception e) {
+        logger.error("Error saving color product variant: {}", e.getMessage());
+    }
+    return colorProduct;
+}
     @Override
     public ColorProductVariant getProductById(Long id) {
         ColorProductVariant colorProduct=colorProductRepository.findById(id)
