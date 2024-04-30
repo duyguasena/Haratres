@@ -68,7 +68,7 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
         return colorProduct;
     }
     @Override
-    public ColorProductVariant deleteProductById(Long id) {
+    public void deleteProductById(Long id) {
         final Logger logger = LoggerFactory.getLogger(this.getClass());
         try {
             ColorProductVariant product = colorProductRepository.findById(id)
@@ -77,18 +77,23 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
         } catch (ProductNotFoundException e) {
             logger.error("Error deleting product: {}", e.getMessage());
         }
-        return null;
     }
     @Override
     public ColorProductVariant updateProduct(Long id, ProductRequest productRequest) {
-        ColorProductVariant realProduct=colorProductRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("ID NOT FOUND"));
-        realProduct.setProductName(productRequest.getProductName());
-        realProduct.setPrice(productRequest.getPrice());
-        realProduct.setColor(productRequest.getColor());
-        realProduct.setColorVariantCode(productRequest.getColorVariantCode());
-        colorProductRepository.save(realProduct);
-        return realProduct;
+        final Logger logger = LoggerFactory.getLogger(this.getClass());
+        try {
+            ColorProductVariant realProduct = colorProductRepository.findById(id)
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found with ID: " + id));
+            realProduct.setProductName(productRequest.getProductName());
+            realProduct.setPrice(productRequest.getPrice());
+            realProduct.setColor(productRequest.getColor());
+            realProduct.setColorVariantCode(productRequest.getColorVariantCode());
+            colorProductRepository.save(realProduct);
+            return realProduct;
+        } catch (ProductNotFoundException e) {
+            logger.error("Error updating product: {}", e.getMessage());
+            throw e;
+        }
     }
 
     @Override
