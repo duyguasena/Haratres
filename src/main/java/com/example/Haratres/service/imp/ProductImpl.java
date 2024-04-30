@@ -1,5 +1,6 @@
 package com.example.Haratres.service.imp;
 
+import com.example.Haratres.dto.ColorProductVariantData;
 import com.example.Haratres.dto.ProductRequest;
 import com.example.Haratres.dto.ProductResponse;
 import com.example.Haratres.model.ColorProductVariant;
@@ -11,6 +12,7 @@ import com.example.Haratres.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,22 +25,25 @@ public class ProductImpl implements ProductService {
 
     @Override
     public ColorProductVariant addProduct(ProductRequest productRequest) {
-
-        SizeProductVariant sizeProduct = new SizeProductVariant();
-        sizeProduct.setSizeCode(productRequest.getProductSize().getSizeCode());
-        sizeProduct.setSize(productRequest.getProductSize().getSize());
-        sizeProduct.setSizeVariantCode(productRequest.getProductSize().getSizeVariantCode());
         ColorProductVariant colorProduct = new ColorProductVariant();
         colorProduct.setColor(productRequest.getColor());
         colorProduct.setProductName(productRequest.getProductName());
         colorProduct.setPrice(productRequest.getPrice());
         colorProduct.setColorVariantCode(productRequest.getColorVariantCode());
-        colorProduct.setSizeProductVariants(List.of(sizeProduct));
-        sizeProduct.setColorProductVariant(colorProduct);
+        List<SizeProductVariant> sizeProductVariants=new ArrayList<>();
+        for(SizeProductVariant size : productRequest.getProductSize()) {
+            SizeProductVariant sizeProduct = new SizeProductVariant();
+            sizeProduct.setSizeCode(size.getSizeCode());
+            sizeProduct.setSize(size.getSize());
+            sizeProduct.setSizeVariantCode(size.getSizeVariantCode());
+            size.setColorProductVariant(colorProduct);
+            sizeProductRepository.save(sizeProduct);
+            sizeProductVariants.add(sizeProduct);
+        }
+        colorProduct.setSizeProductVariants(sizeProductVariants);
         Stock stockProduct = new Stock();
         stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
         colorProductRepository.save(colorProduct);
-        sizeProductRepository.save(sizeProduct);
         return colorProduct;
     }
     @Override

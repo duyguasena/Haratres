@@ -1,5 +1,6 @@
 package com.example.Haratres.controller;
 
+import com.example.Haratres.dto.ColorProductVariantData;
 import com.example.Haratres.dto.ProductRequest;
 import com.example.Haratres.dto.ProductResponse;
 import com.example.Haratres.model.ColorProductVariant;
@@ -24,14 +25,13 @@ public class ProductController {
         ColorProductVariant newProduct=productService.addProduct(productRequest);
         return new ResponseEntity<>(newProduct, HttpStatus.OK);
     }
-    @Secured("ROLE_CUSTOMER")
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
     public ResponseEntity<ColorProductVariant> getProduct(@PathVariable Long id){
         ColorProductVariant response=productService.getProductById(id);
         return new ResponseEntity<>(response,HttpStatus.OK);
-
     }
-    @Secured("ROLE_CUSTOMER")
+    @Secured("ROLE_ADMIN")
     @GetMapping()
     public List<ColorProductVariant> allProduct(){
         return productService.allProducts();
