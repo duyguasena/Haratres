@@ -23,11 +23,4 @@ public class ProductResponse {
     private SizeProductVariant productSize;
     private Stock stock;
 
-//    private String productName;
-//    private double price;
-//    private String colorVariantCode;
-//    private String color;
-//    private List<SizeProductVariant> productSize;
-//    private Stock stock;
-
 }
