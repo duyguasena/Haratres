@@ -2,6 +2,7 @@ package com.example.Haratres.service.imp;
 
 import com.example.Haratres.dto.ProductRequest;
 import com.example.Haratres.dto.ProductResponse;
+import com.example.Haratres.exception.ProductNotFoundException;
 import com.example.Haratres.model.ColorProductVariant;
 import com.example.Haratres.model.SizeProductVariant;
 import com.example.Haratres.model.Stock;
@@ -57,7 +58,7 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
     @Override
     public ColorProductVariant getProductById(Long id) {
         ColorProductVariant colorProduct=colorProductRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Product not found"));
+                .orElseThrow(()->new ProductNotFoundException("Product not found"));
         ProductResponse productResponse=new ProductResponse();
         productResponse.setProductName(productResponse.getProductName());
         productResponse.setPrice(productResponse.getPrice());
@@ -66,19 +67,18 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
         productResponse.setStock(productResponse.getStock());
         return colorProduct;
     }
-@Override
-public ColorProductVariant deleteProductById(Long id) {
-    final Logger logger = LoggerFactory.getLogger(this.getClass());
-    if (id == null || id < 1) {
-        throw new IllegalArgumentException("Invalid product ID");
+    @Override
+    public ColorProductVariant deleteProductById(Long id) {
+        final Logger logger = LoggerFactory.getLogger(this.getClass());
+        try {
+            ColorProductVariant product = colorProductRepository.findById(id)
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found with ID: " + id));
+            colorProductRepository.deleteById(id);
+        } catch (ProductNotFoundException e) {
+            logger.error("Error deleting product: {}", e.getMessage());
+        }
+        return null;
     }
-    try {
-        colorProductRepository.deleteById(id);
-    } catch (Exception e) {
-        logger.error("Error deleting product by ID: {}", e.getMessage());
-    }
-    return null;
-}
     @Override
     public ColorProductVariant updateProduct(Long id, ProductRequest productRequest) {
         ColorProductVariant realProduct=colorProductRepository.findById(id)
