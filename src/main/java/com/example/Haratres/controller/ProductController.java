@@ -1,8 +1,6 @@
 package com.example.Haratres.controller;
 
-import com.example.Haratres.dto.ColorProductVariantData;
 import com.example.Haratres.dto.ProductRequest;
-import com.example.Haratres.dto.ProductResponse;
 import com.example.Haratres.model.ColorProductVariant;
 import com.example.Haratres.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;

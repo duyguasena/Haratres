@@ -66,14 +66,23 @@ public ColorProductVariant addProduct(ProductRequest productRequest) {
         productResponse.setStock(productResponse.getStock());
         return colorProduct;
     }
-    @Override
-    public void  deleteProductById(Long id) {
-        colorProductRepository.deleteById(id);
+@Override
+public ColorProductVariant deleteProductById(Long id) {
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+    if (id == null || id < 1) {
+        throw new IllegalArgumentException("Invalid product ID");
     }
+    try {
+        colorProductRepository.deleteById(id);
+    } catch (Exception e) {
+        logger.error("Error deleting product by ID: {}", e.getMessage());
+    }
+    return null;
+}
     @Override
     public ColorProductVariant updateProduct(Long id, ProductRequest productRequest) {
         ColorProductVariant realProduct=colorProductRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Id bulunamadı"));
+                .orElseThrow(()->new RuntimeException("ID NOT FOUND"));
         realProduct.setProductName(productRequest.getProductName());
         realProduct.setPrice(productRequest.getPrice());
         realProduct.setColor(productRequest.getColor());

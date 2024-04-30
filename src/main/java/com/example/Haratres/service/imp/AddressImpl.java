@@ -6,6 +6,8 @@ import com.example.Haratres.model.User;
 import com.example.Haratres.repository.AddressRepository;
 import com.example.Haratres.repository.UserRepository;
 import com.example.Haratres.service.AddressService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,14 +22,20 @@ public class AddressImpl implements AddressService {
     @Override
     public Address addAddress(AddressRequest addressRequest) {
         Address address = new Address();
-        address.setStreet(addressRequest.getStreet());
-        address.setCity(addressRequest.getCity());
-        address.setPostalCode(addressRequest.getPostalCode());
-        address.setAddressDetail(addressRequest.getAddressDetail());
-        User currentUser = getCurrentUser();
-        address.setUser(currentUser);
-        addressRepository.save(address);
-        return address;
+        final Logger logger = LoggerFactory.getLogger(this.getClass());
+        try {
+            address.setStreet(addressRequest.getStreet());
+            address.setCity(addressRequest.getCity());
+            address.setPostalCode(addressRequest.getPostalCode());
+            address.setAddressDetail(addressRequest.getAddressDetail());
+            User currentUser = getCurrentUser();
+            address.setUser(currentUser);
+            addressRepository.save(address);
+            return address;
+        } catch (Exception e) {
+            logger.error("Error adding address: {}", e.getMessage());
+            return null;
+        }
     }
 
     @Override

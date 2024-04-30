@@ -10,7 +10,7 @@ public interface ProductService {
 
     ColorProductVariant getProductById(Long id);
 
-    void deleteProductById(Long id);
+    ColorProductVariant deleteProductById(Long id);
     ColorProductVariant updateProduct(Long id, ProductRequest productRequest);
 
     boolean existsById(Long id);
