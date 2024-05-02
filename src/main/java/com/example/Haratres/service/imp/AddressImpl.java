@@ -1,6 +1,7 @@
 package com.example.Haratres.service.imp;
 
 import com.example.Haratres.dto.AddressRequest;
+import com.example.Haratres.exception.ResourceNotFoundException;
 import com.example.Haratres.model.Address;
 import com.example.Haratres.model.User;
 import com.example.Haratres.repository.AddressRepository;
@@ -19,10 +20,10 @@ public class AddressImpl implements AddressService {
     private AddressRepository addressRepository;
     @Autowired
     private UserRepository userRepository;
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public Address addAddress(AddressRequest addressRequest) {
         Address address = new Address();
-        final Logger logger = LoggerFactory.getLogger(this.getClass());
         try {
             address.setStreet(addressRequest.getStreet());
             address.setCity(addressRequest.getCity());
@@ -37,22 +38,28 @@ public class AddressImpl implements AddressService {
             return null;
         }
     }
-
     @Override
     public void deleteAddressById(Long id) {
         addressRepository.deleteById(id);
     }
-
     @Override
     public Address updateAddress(Long id, AddressRequest addressRequest) {
-        Address realAddress=addressRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Id bulunamadı"));
-        realAddress.setCity(addressRequest.getCity());
-        realAddress.setStreet(addressRequest.getStreet());
-        realAddress.setPostalCode(addressRequest.getPostalCode());
-        realAddress.setAddressDetail(addressRequest.getAddressDetail());
-        addressRepository.save(realAddress);
-        return realAddress;
+        try {
+            Address realAddress = addressRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Address not found with ID: " + id));
+            realAddress.setCity(addressRequest.getCity());
+            realAddress.setStreet(addressRequest.getStreet());
+            realAddress.setPostalCode(addressRequest.getPostalCode());
+            realAddress.setAddressDetail(addressRequest.getAddressDetail());
+            addressRepository.save(realAddress);
+            return realAddress;
+        } catch (ResourceNotFoundException e) {
+            logger.error("Error updating address: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            logger.error("Error updating address: {}", e.getMessage());
+            throw new RuntimeException("Error updating address", e);
+        }
     }
     @Override
     public boolean existsById(Long id) {

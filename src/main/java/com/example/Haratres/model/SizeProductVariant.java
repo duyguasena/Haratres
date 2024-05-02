@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
-
-
 @Entity
 @Table(name="size_product_variant")
 @Data

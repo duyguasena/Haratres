@@ -13,9 +13,8 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String code;
+    private String code;//10 haneli random code
     private Date creationTime=new Date();
-    private Date modifiedTime=new Date();
 
     @OneToOne
     @JoinColumn(name = "user_id")
