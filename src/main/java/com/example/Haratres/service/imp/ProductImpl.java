@@ -8,6 +8,7 @@ import com.example.Haratres.model.SizeProductVariant;
 import com.example.Haratres.model.Stock;
 import com.example.Haratres.repository.ColorProductRepository;
 import com.example.Haratres.repository.SizeProductRepository;
+import com.example.Haratres.repository.StockRepository;
 import com.example.Haratres.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class ProductImpl implements ProductService {
     private ColorProductRepository colorProductRepository;
     @Autowired
     private SizeProductRepository sizeProductRepository;
+    @Autowired
+    private StockRepository stockRepository;
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public ColorProductVariant addProduct(ProductRequest productRequest) {
@@ -47,8 +50,9 @@ public class ProductImpl implements ProductService {
         }
         colorProduct.setSizeProductVariants(sizeProductVariants);
         Stock stockProduct = new Stock();
-        stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
+        stockProduct.setQuantity(productRequest.getStock().getQuantity());
         try {
+            stockRepository.save(stockProduct);//Burayı düzenle
             colorProductRepository.save(colorProduct);
         } catch (Exception e) {
             logger.error("Error saving color product variant: {}", e.getMessage());

@@ -7,6 +7,7 @@ import com.example.Haratres.model.User;
 import com.example.Haratres.repository.AddressRepository;
 import com.example.Haratres.repository.UserRepository;
 import com.example.Haratres.service.AddressService;
+import com.example.Haratres.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class AddressImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     Logger logger = LoggerFactory.getLogger(this.getClass());
     @Override
     public Address addAddress(AddressRequest addressRequest) {
@@ -29,7 +30,7 @@ public class AddressImpl implements AddressService {
             address.setCity(addressRequest.getCity());
             address.setPostalCode(addressRequest.getPostalCode());
             address.setAddressDetail(addressRequest.getAddressDetail());
-            User currentUser = getCurrentUser();
+            User currentUser = userService.getCurrentUser();
             address.setUser(currentUser);
             addressRepository.save(address);
             return address;
@@ -64,10 +65,5 @@ public class AddressImpl implements AddressService {
     @Override
     public boolean existsById(Long id) {
         return addressRepository.existsById(id);
-    }
-    private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userName = authentication.getName();
-        return (User) userRepository.findByUserName(userName);
     }
 }

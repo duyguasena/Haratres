@@ -1,5 +1,9 @@
 package com.example.Haratres.service;
 
+import com.example.Haratres.dto.CartResponse;
+import com.example.Haratres.model.Cart;
+
 public interface CartService {
-    String createCart(String userId);
+    CartResponse createCart(String token);
+
 }
