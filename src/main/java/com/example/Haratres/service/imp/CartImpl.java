@@ -42,7 +42,7 @@ public class CartImpl implements CartService {
                 return new CartResponse(code.toString());
             }
         } catch (Exception e) {
-            logger.error("Error updating address: {}", e.getMessage());
+            logger.error("Error create cart: {}", e.getMessage());
             throw new CartCreationException("Failed to create new cart");
         }
 }
