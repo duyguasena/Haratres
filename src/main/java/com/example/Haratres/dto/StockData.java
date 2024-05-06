@@ -4,7 +4,6 @@ import com.example.Haratres.model.Stock;
 import lombok.Data;
 
 @Data
-public class StockData extends Stock {
-    private String productCode;
+public class StockData  {
     private int stockQuantity;
 }

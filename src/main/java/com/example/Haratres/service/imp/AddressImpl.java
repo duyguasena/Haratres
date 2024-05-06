@@ -21,7 +21,7 @@ public class AddressImpl implements AddressService {
     private AddressRepository addressRepository;
     @Autowired
     private UserService userService;
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(AddressImpl.class);
     @Override
     public Address addAddress(AddressRequest addressRequest) {
         Address address = new Address();

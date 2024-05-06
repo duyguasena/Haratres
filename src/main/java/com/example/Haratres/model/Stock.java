@@ -1,7 +1,9 @@
 package com.example.Haratres.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
@@ -10,12 +12,13 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 public class Stock {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private int quantity;
-
+    private int stockQuantity;
     @OneToOne
+    @JsonBackReference
     private SizeProductVariant sizeVariantCode;
 
 }

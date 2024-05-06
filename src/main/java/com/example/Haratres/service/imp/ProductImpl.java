@@ -26,7 +26,7 @@ public class ProductImpl implements ProductService {
     private SizeProductRepository sizeProductRepository;
     @Autowired
     private StockRepository stockRepository;
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(ProductImpl.class);
     @Override
     public ColorProductVariant addProduct(ProductRequest productRequest) {
         ColorProductVariant colorProduct = new ColorProductVariant();
@@ -50,7 +50,8 @@ public class ProductImpl implements ProductService {
         }
         colorProduct.setSizeProductVariants(sizeProductVariants);
         Stock stockProduct = new Stock();
-        stockProduct.setQuantity(productRequest.getStock().getQuantity());
+        stockProduct.setStockQuantity(productRequest.getStock().getStockQuantity());
+
         try {
             stockRepository.save(stockProduct);//Burayı düzenle
             colorProductRepository.save(colorProduct);

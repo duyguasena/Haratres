@@ -24,6 +24,4 @@ public class Cart {
     private User user;
 
 
-
-
 }

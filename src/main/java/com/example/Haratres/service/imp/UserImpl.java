@@ -26,7 +26,6 @@ public class UserImpl implements UserService {
         return userRepository.existsByUserName(userName);
     }
 
-    //KONTROL ET
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();

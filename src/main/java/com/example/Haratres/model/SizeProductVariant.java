@@ -11,13 +11,16 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 public class SizeProductVariant {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique = true)
     private String sizeVariantCode;
     private String size;
     private String sizeCode;
+    @OneToOne
+    private Stock stock;
+
 
     @ManyToOne()
     @JoinColumn(name="color_product_variant_id",referencedColumnName = "id")
