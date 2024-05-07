@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 public interface CartService {
     CartResponse createCart(String token);
 
-    ResponseEntity<CartEntryResponse> createCartEntry(String cartId, CartEntryRequest cartEntryRequest);
+    ResponseEntity<CartEntryResponse> createCartEntry(String cartId, CartEntryRequest cartEntryRequest) ;
 
 
 }

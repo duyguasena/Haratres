@@ -61,7 +61,7 @@ public class CartImpl implements CartService {
         }
 }
     @Override
-    public ResponseEntity<CartEntryResponse> createCartEntry(String cartId, CartEntryRequest cartEntryRequest) {
+    public ResponseEntity<CartEntryResponse> createCartEntry(String cartId, CartEntryRequest cartEntryRequest)  {
         //Verilen code ile cart'ı veritabanından buldum
         Optional<Cart> optionalCart = cartRepository.findByCode(cartId);
         if (optionalCart.isEmpty()) {
@@ -71,7 +71,12 @@ public class CartImpl implements CartService {
         // Sepet nesnesini aldım
         Cart cart = optionalCart.get();
 
-        // Beden konuna göre ürünün olup olmadığını kontrol ettim
+        double sum = cart.getCartEntries().stream()
+                .mapToDouble(cartEntry -> cartEntry.getSizeProductVariant().getPrice())
+                .sum();
+        cart.setTotalPrice(sum);
+
+        // Beden koduna göre ürünün olup olmadığını kontrol ettim
         Optional<SizeProductVariant> optionalProduct = sizeProductRepository.findBySizeVariantCode(cartEntryRequest.getSizeVariantCode());
         if (optionalProduct.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -79,6 +84,7 @@ public class CartImpl implements CartService {
         SizeProductVariant sizeProductVariant = optionalProduct.get();
 
         //Mevcut stoğu kontrol ettim
+
         int availableStock = sizeProductVariant.getStock().getStockQuantity();
         if (availableStock < cartEntryRequest.getQuantity()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -87,8 +93,6 @@ public class CartImpl implements CartService {
         CartEntry cartEntry = new CartEntry();
         cartEntry.setQuantity(cartEntryRequest.getQuantity());
         cartEntry.setSizeProductVariant(sizeProductVariant);
-
-
 
         // Sepetin içindekileri db ye kaydettim
         try {
@@ -108,10 +112,14 @@ public class CartImpl implements CartService {
         } catch (DataAccessException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+
         CartEntryResponse cartEntryResponse=new CartEntryResponse();
         cartEntryResponse.setId(cart.getId());
+        cartEntryResponse.setCode(cart.getCode());
         cartEntryResponse.setCreationTime(cart.getCreationTime());
-        cartEntryResponse.setCartEntries(cart.getCartEntries());
+        cartEntryResponse.setTotalPrice(cart.getTotalPrice());
+        cartEntryResponse.setQuantity(cartEntry.getQuantity());
+        //cartEntryResponse.setCartEntries(cart.getCartEntries());
         return ResponseEntity.ok(cartEntryResponse);
     }
 }

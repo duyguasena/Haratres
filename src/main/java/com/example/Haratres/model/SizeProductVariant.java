@@ -18,6 +18,7 @@ public class SizeProductVariant {
     private String sizeVariantCode;
     private String size;
     private String sizeCode;
+    private double price;
     @OneToOne
     private Stock stock;
 
